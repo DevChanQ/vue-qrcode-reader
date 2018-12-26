@@ -57,6 +57,11 @@ export default {
       type: [Function, Boolean],
       default: true,
     },
+
+    area: {
+      type: Object,
+      default: () => null,
+    },
   },
 
   data () {
@@ -106,6 +111,10 @@ export default {
   },
 
   watch: {
+    area (area) {
+      this.stopScanning()
+      this.startScanning()
+    },
 
     shouldStream (shouldStream) {
       if (!shouldStream) {
@@ -201,7 +210,7 @@ export default {
         detectHandler,
         locateHandler: this.onLocate,
         minDelay: this.scanInterval,
-      })
+      }, this.area)
     },
 
     beforeResetCamera () {

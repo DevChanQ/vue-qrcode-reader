@@ -19,7 +19,7 @@ export function scan (imageData) {
  * Continuously extracts frames from camera stream and tries to read
  * potentially pictured QR codes.
  */
-export function keepScanning (camera, options) {
+export function keepScanning (camera, options, area) {
   const {
     detectHandler,
     locateHandler,
@@ -64,7 +64,7 @@ export function keepScanning (camera, options) {
         if (workerBusy === false) {
           workerBusy = true
 
-          const imageData = camera.captureFrame()
+          const imageData = camera.captureFrame(area)
 
           worker.postMessage(imageData, [imageData.data.buffer])
         }

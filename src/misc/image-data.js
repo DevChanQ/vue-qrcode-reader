@@ -7,28 +7,34 @@ const canvasCtx = canvas.getContext('2d')
 canvas.width = 1920
 canvas.height = 1080
 
-function imageDataFromCanvas (canvasImageSource, width, height) {
-  const scalingRatio = Math.min(1, canvas.width / width, canvas.height / height)
-  const widthScaled = scalingRatio * width
-  const heightScaled = scalingRatio * height
+function imageDataFromCanvas (canvasImageSource, area) {
+  const scalingRatio = Math.min(1, canvas.width / area.size.width, canvas.height / area.size.height)
+  const widthScaled = scalingRatio * area.size.width
+  const heightScaled = scalingRatio * area.size.height
+  const xScaled = scalingRatio * area.position.x
+  const yScaled = scalingRatio * area.position.y
 
   canvasCtx.drawImage(canvasImageSource, 0, 0, widthScaled, heightScaled)
 
-  return canvasCtx.getImageData(0, 0, widthScaled, heightScaled)
+  return canvasCtx.getImageData(xScaled, yScaled, widthScaled, heightScaled)
 }
 
 export function imageDataFromImage (imageElement) {
   const width = imageElement.naturalWidth
   const height = imageElement.naturalHeight
 
-  return imageDataFromCanvas(imageElement, width, height)
+  return imageDataFromCanvas(imageElement, {position: {x: 0, y: 0}, size: {width: width, height: height}})
 }
 
-export function imageDataFromVideo (videoElement) {
-  const width = videoElement.videoWidth
-  const height = videoElement.videoHeight
+export function imageDataFromVideo (videoElement, area = null) {
+  if (area) {
+    const width = videoElement.videoWidth
+    const height = videoElement.videoHeight
 
-  return imageDataFromCanvas(videoElement, width, height)
+    return imageDataFromCanvas(videoElement, {position: {x: 0, y: 0}, size: {width: width, height: height}})
+  }
+
+  return imageDataFromCanvas(videoElement, area)
 }
 
 export async function imageDataFromUrl (url) {

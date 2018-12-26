@@ -4,7 +4,7 @@ import { hasFired } from './promisify.js'
 
 class Camera {
 
-  constructor (videoEl, stream) {
+  constructor (videoEl, stream, area) {
     this.videoEl = videoEl
     this.stream = stream
   }
@@ -15,8 +15,8 @@ class Camera {
     )
   }
 
-  captureFrame () {
-    return imageDataFromVideo(this.videoEl)
+  captureFrame (area = null) {
+    return imageDataFromVideo(this.videoEl, area)
   }
 
 }
