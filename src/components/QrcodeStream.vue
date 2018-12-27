@@ -112,8 +112,7 @@ export default {
 
   watch: {
     area (area) {
-      this.stopScanning()
-      this.startScanning()
+      this.$emit('init', this.init())
     },
 
     shouldStream (shouldStream) {
