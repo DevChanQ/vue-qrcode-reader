@@ -8,7 +8,7 @@ class Camera {
     this.videoEl = videoEl
     this.stream = stream
 
-    let areaSize = Math.floor(this.videoEl.videoWidth / 2)
+    let areaSize = Math.floor(window.innerWidth / 2)
     this.centerArea = {position: {x: Math.floor(areaSize / 2), y: Math.floor((this.videoEl.videoHeight - areaSize) / 2)}, size: {width: areaSize, height: areaSize}}
   }
 
