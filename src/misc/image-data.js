@@ -7,16 +7,16 @@ const canvasCtx = canvas.getContext('2d')
 canvas.width = 1920
 canvas.height = 1080
 
-function imageDataFromCanvas (canvasImageSource, area) {
+function imageDataFromCanvas (canvasImageSource, area = null) {
   const scalingRatio = Math.min(1, canvas.width / area.size.width, canvas.height / area.size.height)
   const widthScaled = scalingRatio * area.size.width
   const heightScaled = scalingRatio * area.size.height
   const xScaled = scalingRatio * area.position.x
   const yScaled = scalingRatio * area.position.y
 
-  canvasCtx.drawImage(canvasImageSource, 0, 0, widthScaled, heightScaled)
+  canvasCtx.drawImage(canvasImageSource, xScaled, yScaled, widthScaled, heightScaled, 0, 0, widthScaled, heightScaled)
 
-  return canvasCtx.getImageData(xScaled, yScaled, widthScaled, heightScaled)
+  return canvasCtx.getImageData(0, 0, widthScaled, heightScaled)
 }
 
 export function imageDataFromImage (imageElement) {
@@ -27,7 +27,7 @@ export function imageDataFromImage (imageElement) {
 }
 
 export function imageDataFromVideo (videoElement, area = null) {
-  if (area) {
+  if (!area) {
     const width = videoElement.videoWidth
     const height = videoElement.videoHeight
 

@@ -4,9 +4,12 @@ import { hasFired } from './promisify.js'
 
 class Camera {
 
-  constructor (videoEl, stream, area) {
+  constructor (videoEl, stream) {
     this.videoEl = videoEl
     this.stream = stream
+
+    let areaSize = Math.floor(this.videoEl.videoWidth / 2)
+    this.centerArea = {position: {x: Math.floor(areaSize / 2), y: Math.floor((this.videoEl.videoHeight - areaSize) / 2)}, size: {width: areaSize, height: areaSize}}
   }
 
   stop () {
@@ -15,8 +18,9 @@ class Camera {
     )
   }
 
-  captureFrame (area = null) {
-    return imageDataFromVideo(this.videoEl, area)
+  captureFrame (center = false) {
+    if (center) return imageDataFromVideo(this.videoEl, this.centerArea)
+    return imageDataFromVideo(this.videoEl)
   }
 
 }

@@ -111,10 +111,6 @@ export default {
   },
 
   watch: {
-    area (area) {
-      this.$emit('init', this.init())
-    },
-
     shouldStream (shouldStream) {
       if (!shouldStream) {
         const frame = this.cameraInstance.captureFrame()
@@ -209,7 +205,7 @@ export default {
         detectHandler,
         locateHandler: this.onLocate,
         minDelay: this.scanInterval,
-      }, this.area)
+      })
     },
 
     beforeResetCamera () {
