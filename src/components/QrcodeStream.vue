@@ -58,9 +58,9 @@ export default {
       default: true,
     },
 
-    area: {
-      type: Object,
-      default: () => null,
+    size: {
+      type: Number,
+      default: 0,
     },
   },
 
@@ -111,6 +111,7 @@ export default {
   },
 
   watch: {
+
     shouldStream (shouldStream) {
       if (!shouldStream) {
         const frame = this.cameraInstance.captureFrame()
@@ -162,6 +163,10 @@ export default {
     constraints () {
       this.$emit('init', this.init())
     },
+
+    size () {
+      if (this.size) this.$emit('init', this.init())
+    },
   },
 
   mounted () {
@@ -181,7 +186,7 @@ export default {
       if (this.constraints.video === false) {
         this.cameraInstance = null
       } else {
-        this.cameraInstance = await Camera(this.constraints, this.$refs.video)
+        this.cameraInstance = await Camera(this.constraints, this.$refs.video, this.size)
 
         // if the component is destroyed before `cameraInstance` resolves a
         // `beforeDestroy` hook has no chance to clear the remaining camera

@@ -4,12 +4,11 @@ import { hasFired } from './promisify.js'
 
 class Camera {
 
-  constructor (videoEl, stream) {
+  constructor (videoEl, stream, centerArea = null) {
     this.videoEl = videoEl
     this.stream = stream
 
-    let areaSize = Math.floor(window.innerWidth / 2)
-    this.centerArea = {position: {x: Math.floor(areaSize / 2), y: Math.floor((this.videoEl.videoHeight - areaSize) / 2)}, size: {width: areaSize, height: areaSize}}
+    this.centerArea = centerArea
   }
 
   stop () {
@@ -18,14 +17,17 @@ class Camera {
     )
   }
 
-  captureFrame (center = false) {
-    if (center) return imageDataFromVideo(this.videoEl, this.centerArea)
+  captureFrame (cropped = true) {
+    if (cropped && this.centerArea) {
+      return imageDataFromVideo(this.videoEl, this.centerArea)
+    }
+
     return imageDataFromVideo(this.videoEl)
   }
 
 }
 
-export default async function (constraints, videoEl) {
+export default async function (constraints, videoEl, size) {
   if (!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia)) {
     throw new StreamApiNotSupportedError()
   }
@@ -47,5 +49,8 @@ export default async function (constraints, videoEl) {
 
   await streamLoaded
 
-  return new Camera(videoEl, stream)
+  let area = null
+  if (size) area = {position: {x: Math.floor((videoEl.videoWidth - size) / 2), y: Math.floor((videoEl.videoHeight - size) / 2)}, size: {width: size, height: size}}
+
+  return new Camera(videoEl, stream, area)
 }
