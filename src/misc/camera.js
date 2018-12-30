@@ -17,7 +17,7 @@ class Camera {
     )
   }
 
-  captureFrame (cropped = true) {
+  captureFrame (cropped = false) {
     if (cropped && this.centerArea) {
       return imageDataFromVideo(this.videoEl, this.centerArea)
     }
